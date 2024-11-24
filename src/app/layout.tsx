@@ -1,16 +1,16 @@
-import type { Metadata } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { Plus_Jakarta_Sans } from 'next/font/google';
+import './globals.css';
 
 const geistSans = Plus_Jakarta_Sans({
-  variable: "--plus-jakarta-sans",
-  subsets: ["latin"],
-  weight: ["400", "600", "800"],
+  variable: '--plus-jakarta-sans',
+  subsets: ['latin'],
+  weight: ['400', '600', '800'],
 });
 
 export const metadata: Metadata = {
-  title: "Live Chat App",
-  description: "Live (real time) chat app with websocket",
+  title: 'Group Chat',
+  description: 'Real Time Group Chat App with websocket',
 };
 
 export default function RootLayout({

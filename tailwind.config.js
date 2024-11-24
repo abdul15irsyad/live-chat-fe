@@ -1,8 +1,17 @@
+import plugin from 'tailwindcss/plugin';
+
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
-  theme: {
-    extend: {},
+export const content = ['./src/**/*.{js,ts,jsx,tsx,mdx}'];
+export const theme = {
+  extend: {
+    fontSize: {
+      xxs: '0.625rem',
+      lineHeight: '1rem',
+    },
   },
-  plugins: [],
 };
+export const plugins = [
+  plugin(({ addVariant }) => {
+    addVariant('not-disabled', '&:not(:disabled)');
+  }),
+];
