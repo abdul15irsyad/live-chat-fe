@@ -35,8 +35,11 @@ export const InputChat = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="max-w-screen-lg mx-auto px-3 lg:px-0 pb-3">
+    <form
+      onSubmit={handleSubmit}
+      className="bg-gray-50 border-t-2 border-gray-100"
+    >
+      <div className="max-w-screen-lg mx-auto px-3 lg:px-0 py-2">
         <div className="flex gap-3">
           <textarea
             rows={1}
