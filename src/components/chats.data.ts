@@ -6,7 +6,7 @@ export interface Chat {
   name: string;
   message: string;
   datetime: string;
-  isSelf: boolean;
+  isSend: boolean;
 }
 
 export const chats: Chat[] = [...Array(20)]
@@ -23,7 +23,7 @@ export const chats: Chat[] = [...Array(20)]
         .subtract(randomInt(0, 1000), 'days')
         .subtract(randomInt(0, 10), 'hours')
         .format('YYYY-MM-DD HH:mm:ss'),
-      isSelf: random([true, false]),
+      isSend: random([true, false]),
     }),
   )
   .sort((a, b) => (dayjs(a.datetime).isBefore(dayjs(b.datetime)) ? -1 : 1));
