@@ -9,8 +9,8 @@ const geistSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'Group Chat',
-  description: 'Real Time Group Chat App with websocket',
+  title: 'Room Chat',
+  description: 'Real Time Room Chat App with websocket',
 };
 
 export default function RootLayout({
