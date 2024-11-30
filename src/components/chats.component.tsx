@@ -15,17 +15,9 @@ export const Chats = () => {
           {chats.map((chat, index) => {
             switch (chat.type) {
               case 'chat':
-                return (
-                  <Chat
-                    key={index}
-                    name={chat.name}
-                    message={chat.message}
-                    timestamp={chat.timestamp}
-                    isSend={chat.isSend}
-                  />
-                );
+                return <Chat key={index} {...chat} />;
               case 'badge':
-                return <Badge {...chat} />;
+                return <Badge key={index} {...chat} />;
             }
           })}
         </div>

@@ -1,6 +1,6 @@
 import { create, StateCreator } from 'zustand';
 import { persist, PersistOptions, createJSONStorage } from 'zustand/middleware';
-import { dummyChats } from './dummy-chats.data';
+// import { dummyChats } from './dummy-chats.data';
 
 type BaseChat = {
   timestamp: Date;
@@ -47,14 +47,14 @@ export const useChatStore = create<IChatState>(
             name: 'you',
             timestamp: new Date(),
           },
-          ...dummyChats,
+          // ...dummyChats,
         ],
         setChats: (chats) => set({ chats }),
       };
     },
     {
       name: 'chat',
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => sessionStorage),
       partialize: (state) => ({ name: state.name }),
     },
   ),
