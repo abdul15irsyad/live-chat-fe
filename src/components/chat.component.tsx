@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 export const Chat = (props: {
   name: string;
   message: string;
-  datetime: string;
+  timestamp: Date;
   isSend?: boolean;
 }) => {
   const { name, isSend } = props;
@@ -29,17 +29,17 @@ const ChatBubble = ({
   name,
   message,
   isSend,
-  datetime,
+  timestamp,
 }: {
   name: string;
   message: string;
   isSend?: boolean;
-  datetime: string;
+  timestamp: Date;
 }) => {
-  const dayjsDatetime = dayjs(datetime);
+  const dayjsDatetime = dayjs(timestamp);
   const date = dayjs().isSame(dayjsDatetime, 'year')
-    ? dayjsDatetime.format('MMM DD')
-    : dayjsDatetime.format('MMM DD, YYYY');
+    ? dayjsDatetime.format('MMM D')
+    : dayjsDatetime.format('MMM D, YYYY');
   const time = dayjsDatetime.format('HH:mm');
   const isToday = dayjs().isSame(dayjsDatetime, 'date');
   const isYesterday = dayjs().subtract(1, 'day').isSame(dayjsDatetime, 'date');
@@ -61,16 +61,11 @@ const ChatBubble = ({
         <p className="text-xs md:text-sm text-gray-900 mb-1">{message}</p>
         <div className="flex gap-1 text-xxs md:text-xs justify-end text-gray-400 self-end">
           {isToday ? null : isYesterday ? (
-            <>
-              <span>Yesterday</span>
-              <span>-</span>
-            </>
+            <span>Yesterday</span>
           ) : (
-            <>
-              <span>{date}</span>
-              <span>-</span>
-            </>
+            <span>{date}</span>
           )}
+          <span>|</span>
           <span>{time}</span>
         </div>
       </div>
