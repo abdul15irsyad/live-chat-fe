@@ -1,5 +1,6 @@
 'use client';
 
+import { useChatStore } from '@/hooks/use-chat-store';
 import { SendHorizontal } from 'lucide-react';
 import React, {
   ChangeEventHandler,
@@ -9,6 +10,7 @@ import React, {
 } from 'react';
 
 export const InputChat = () => {
+  const { name, addChat, webSocket } = useChatStore();
   const [text, setText] = useState('');
 
   const handleKeyDown: KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
@@ -28,8 +30,24 @@ export const InputChat = () => {
   };
 
   const submit = () => {
+    if (!webSocket) return;
+
     if (text.trim()) {
-      console.log('Submitted:', { text });
+      webSocket?.send(
+        JSON.stringify({
+          type: 'message',
+          data: {
+            message: text.trim(),
+          },
+        }),
+      );
+      addChat({
+        type: 'chat',
+        name: name!,
+        message: text.trim(),
+        isSend: true,
+        timestamp: new Date(),
+      });
       setText('');
     }
   };

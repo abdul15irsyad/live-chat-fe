@@ -20,7 +20,7 @@ export const Chat = (props: {
 const Avatar = ({ name }: { name: string }) => {
   return (
     <div className="flex flex-shrink-0 items-center justify-center w-9 h-9 md:w-10 md:h-10 lg:w-12 lg:h-12 rounded-full bg-blue-500 text-white text-xl font-bold">
-      {name?.split('')[0]}
+      {name?.split('')?.[0]?.toUpperCase()}
     </div>
   );
 };
@@ -58,14 +58,22 @@ const ChatBubble = ({
         <h5 className="font-bold text-xs md:text-sm lg:text-md mb-1">{name}</h5>
       )}
       <div className="flex flex-wrap justify-end gap-x-5">
-        <p className="text-xs md:text-sm text-gray-900 mb-1">{message}</p>
+        <p
+          className="text-xs md:text-sm text-gray-900 mb-1"
+          dangerouslySetInnerHTML={{ __html: message }}
+        ></p>
         <div className="flex gap-1 text-xxs md:text-xs justify-end text-gray-400 self-end">
           {isToday ? null : isYesterday ? (
-            <span>Yesterday</span>
+            <>
+              <span>Yesterday</span>
+              <span>|</span>
+            </>
           ) : (
-            <span>{date}</span>
+            <>
+              <span>{date}</span>
+              <span>|</span>
+            </>
           )}
-          <span>|</span>
           <span>{time}</span>
         </div>
       </div>

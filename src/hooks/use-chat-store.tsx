@@ -26,6 +26,9 @@ interface IChatState {
   setName: (name: string) => void;
   chats: IChat[];
   setChats: (chats: IChat[]) => void;
+  addChat: (chat: IChat) => void;
+  webSocket?: WebSocket;
+  setWebSocket: (webSocket: WebSocket) => void;
 }
 
 export const useChatStore = create<IChatState>(
@@ -50,6 +53,16 @@ export const useChatStore = create<IChatState>(
           // ...dummyChats,
         ],
         setChats: (chats) => set({ chats }),
+        addChat: (chat) =>
+          set((prev) => {
+            if (chat.type === 'chat') {
+              chat.message = chat.message?.replace(/\n/g, '<br>');
+            }
+            return {
+              chats: [...prev.chats, chat],
+            };
+          }),
+        setWebSocket: (webSocket) => set({ webSocket }),
       };
     },
     {

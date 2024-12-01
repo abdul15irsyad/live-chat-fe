@@ -17,7 +17,7 @@ export const Header = ({ meta, typing }: { meta: string; typing?: string }) => {
             />
             <h1 className="md:text-xl text-lg font-bold">Room Chat</h1>
           </div>
-          <h6 className="text-xxs md:text-xs">
+          <h6 className="invisible text-xxs md:text-xs">
             {typing ? (
               <span className="text-green-600">{`${typing} typing...`}</span>
             ) : (
