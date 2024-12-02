@@ -41,17 +41,8 @@ export const useChatStore = create<IChatState>(
     (set) => {
       return {
         name: undefined,
+        chats: [],
         setName: (name) => set({ name }),
-        // chats: [],
-        chats: [
-          {
-            type: 'badge',
-            event: 'joined',
-            name: 'you',
-            timestamp: new Date(),
-          },
-          // ...dummyChats,
-        ],
         setChats: (chats) => set({ chats }),
         addChat: (chat) =>
           set((prev) => {

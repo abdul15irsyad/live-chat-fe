@@ -17,6 +17,15 @@ export default () => {
     const socket = new WebSocket(`ws://localhost:5010/ws?name=${name}`);
     setWebSocket(socket);
 
+    socket.onopen = () => {
+      addChat({
+        type: 'badge',
+        event: 'joined',
+        name: 'you',
+        timestamp: new Date(),
+      });
+    };
+
     socket.onmessage = (event) => {
       const payload = JSON.parse(event.data);
       if (payload.type === 'message') {

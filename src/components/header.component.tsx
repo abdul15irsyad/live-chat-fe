@@ -1,8 +1,11 @@
+import { useChatStore } from '@/hooks/use-chat-store';
 import Image from 'next/image';
-import Link from 'next/link';
+// import Link from 'next/link';
 import React from 'react';
 
 export const Header = ({ meta, typing }: { meta: string; typing?: string }) => {
+  const { name } = useChatStore();
+
   return (
     <div className="bg-white shadow-md z-10">
       <div className="flex items-center p-3 lg:py-2 lg:px-0 max-w-screen-lg mx-auto">
@@ -26,7 +29,10 @@ export const Header = ({ meta, typing }: { meta: string; typing?: string }) => {
           </h6>
         </div>
         <div className="flex">
-          <Link href="https://github.com/abdul15irsyad" target="_blank">
+          <div className="border-gray-200 border-2 px-1.5 py-1 rounded-md text-sm">
+            {name}
+          </div>
+          {/* <Link href="https://github.com/abdul15irsyad" target="_blank">
             <Image
               src="/images/github.svg"
               alt="github"
@@ -34,7 +40,7 @@ export const Header = ({ meta, typing }: { meta: string; typing?: string }) => {
               height={32}
               className="md:w-6 md:h-6 w-6 h-6"
             />
-          </Link>
+          </Link> */}
         </div>
       </div>
     </div>
