@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { Avatar } from './avatar.component';
 
 export const Chat = (props: {
   name: string;
@@ -13,14 +14,6 @@ export const Chat = (props: {
         {!isSend && <Avatar name={name} />}
         <ChatBubble {...props} />
       </div>
-    </div>
-  );
-};
-
-const Avatar = ({ name }: { name: string }) => {
-  return (
-    <div className="flex flex-shrink-0 items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-full bg-blue-500 text-white text-md font-semibold">
-      {name?.split('')?.[0]?.toUpperCase()}
     </div>
   );
 };
@@ -47,20 +40,22 @@ const ChatBubble = ({
   return (
     <div
       className={`flex-auto ${
-        isSend ? 'bg-emerald-50' : 'bg-white'
+        isSend ? 'bg-green-200' : 'bg-white'
       } p-3.5 md:py-3 md:px-3 ${
         isSend
           ? 'rounded-tl-xl rounded-tr-none rounded-bl-xl rounded-br-xl'
           : 'rounded-tl-none rounded-tr-xl rounded-bl-xl rounded-br-xl'
       }`}
     >
-      {!isSend && <h5 className="font-bold text-xs mb-1">{name}</h5>}
+      {!isSend && (
+        <h5 className="font-bold text-xs mb-1 select-none">{name}</h5>
+      )}
       <div className="flex flex-wrap justify-end gap-x-5">
         <p
           className="text-xs md:text-sm text-gray-900 mb-1"
           dangerouslySetInnerHTML={{ __html: message }}
         ></p>
-        <div className="flex gap-1 text-xxs md:text-xs justify-end text-gray-400 self-end">
+        <div className="flex gap-1 text-xxs justify-end text-gray-400 self-end select-none">
           {isToday ? null : isYesterday ? (
             <>
               <span>Yesterday</span>

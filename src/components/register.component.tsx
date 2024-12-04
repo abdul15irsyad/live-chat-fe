@@ -1,17 +1,49 @@
 'use client';
 
 import { useChatStore } from '@/hooks/use-chat-store';
-import React from 'react';
+import { axiosAPI } from '@/utils/axios-api.util';
+import { errorHandler } from '@/utils/error.util';
+import { useMutation } from '@tanstack/react-query';
+import React, { useEffect, useState } from 'react';
 
 export const Register = () => {
   const { setName } = useChatStore();
+  const [form, setForm] = useState<Record<string, string>>({
+    name: '',
+  });
+  const [error, setError] = useState<Record<string, string>>({});
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+  const { mutateAsync, error: errorRegister } = useMutation({
+    mutationKey: ['register'],
+    mutationFn: async ({ name }: { name: string }) => {
+      const response = await axiosAPI.post<{ message: string; data: string[] }>(
+        '/register',
+        {
+          name,
+        },
+      );
+      return response.data;
+    },
+  });
+
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const name = formData.get('name');
-    if (name) setName(name.toString());
+    setError({});
+    if (form.name !== '') {
+      await mutateAsync({ name: form.name });
+      setName(form.name);
+    }
   };
+
+  useEffect(() => {
+    setError({});
+  }, [form, setError]);
+
+  useEffect(() => {
+    const error = errorRegister;
+    if (!error) return;
+    errorHandler({ error, setError });
+  }, [errorRegister]);
 
   return (
     <div
@@ -32,27 +64,30 @@ export const Register = () => {
                 className="text-base font-semibold text-gray-900 mb-2"
                 id="modal-title"
               >
-                Set your name first
+                First, set your name
               </h3>
               <input
                 type="text"
-                name="name"
-                className="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                className={`border border-gray-300 text-gray-900 ${error?.name ? 'border-red-500 outline-red-500' : ''} text-sm rounded-lg block w-full p-2.5`}
                 placeholder="your name, example: John Doe"
+                value={form.name}
+                onChange={(e) =>
+                  setForm((state) => ({ ...state, name: e.target.value }))
+                }
               />
+              {error?.name && (
+                <small className="text-xs pl-3 text-red-500">
+                  {error?.name}
+                </small>
+              )}
               <div className="flex justify-end mt-10">
                 <button
                   type="submit"
-                  className="inline-flex rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700"
+                  disabled={form.name === ''}
+                  className="inline-flex rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 disabled:bg-gray-400"
                 >
                   Start Chatting
                 </button>
-                {/* <button
-                type="button"
-                className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-              >
-                Cancel
-              </button> */}
               </div>
             </form>
           </div>

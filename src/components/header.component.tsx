@@ -2,9 +2,10 @@ import { useChatStore } from '@/hooks/use-chat-store';
 import Image from 'next/image';
 // import Link from 'next/link';
 import React from 'react';
+import { Avatar } from './avatar.component';
 
-export const Header = ({ meta, typing }: { meta: string; typing?: string }) => {
-  const { name } = useChatStore();
+export const Header = ({ typing }: { typing?: string }) => {
+  const { name, clientNames } = useChatStore();
 
   return (
     <div className="bg-white shadow-md z-10">
@@ -20,17 +21,18 @@ export const Header = ({ meta, typing }: { meta: string; typing?: string }) => {
             />
             <h1 className="md:text-xl text-lg font-bold">Room Chat</h1>
           </div>
-          <h6 className="invisible text-xxs md:text-xs">
+          <h6 className="text-xxs md:text-xs">
             {typing ? (
               <span className="text-green-600">{`${typing} typing...`}</span>
             ) : (
-              meta
+              <span className="text-gray-400">{clientNames?.join(', ')}</span>
             )}
           </h6>
         </div>
         <div className="flex">
-          <div className="border-gray-200 border-2 px-1.5 py-1 rounded-md text-sm">
-            {name}
+          <div className="flex items-center gap-1.5 p-2 px-2.5 text-sm hover:bg-gray-100 rounded-md">
+            <Avatar name={name!} size="sm" />
+            <div className="font-bold">{name}</div>
           </div>
           {/* <Link href="https://github.com/abdul15irsyad" target="_blank">
             <Image

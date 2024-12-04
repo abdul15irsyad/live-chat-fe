@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
+import { AllProvider } from '@/components/provider.component';
 
 const geistSans = Plus_Jakarta_Sans({
   variable: '--plus-jakarta-sans',
@@ -20,7 +21,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.className}`}>{children}</body>
+      <body className={`${geistSans.className}`}>
+        <AllProvider>{children}</AllProvider>
+      </body>
     </html>
   );
 }
