@@ -53,7 +53,7 @@ export const Register = () => {
       aria-modal="true"
     >
       <div
-        className="fixed inset-0 bg-gray-500/75 transition-opacity"
+        className="fixed inset-0 bg-gray-300 transition-opacity"
         aria-hidden="true"
       ></div>
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
