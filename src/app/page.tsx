@@ -3,8 +3,11 @@
 import { Chats } from '@/components/chats.component';
 import { Header } from '@/components/header.component';
 import { InputChat } from '@/components/input-chat.component';
+import { InitLoading } from '@/components/init-loading.component';
 import { Register } from '@/components/register.component';
 import { useChatStore } from '@/hooks/use-chat-store';
+import { axiosAPI } from '@/utils/axios-api.util';
+import { useQuery } from '@tanstack/react-query';
 // import { useHydrationZustand } from '@/hooks/use-hydration';
 import { useEffect } from 'react';
 
@@ -51,6 +54,14 @@ export default () => {
     return () => socket.close();
   }, [name, setWebSocket, addChat]);
 
+  const { isLoading: isLoadingRoot } = useQuery({
+    queryKey: ['root'],
+    queryFn: async () => {
+      const response = await axiosAPI.get('/');
+      return response.data;
+    },
+  });
+
   // const { data: allClientNamesResponse, refetch } = useQuery({
   //   queryKey: ['allClientNames'],
   //   queryFn: async () => {
@@ -71,10 +82,12 @@ export default () => {
 
   // if (!isHydrated) return 'loading';
 
+  if (isLoadingRoot) return <InitLoading />;
+
   if (!name) return <Register />;
 
   return (
-    <div className="fixed flex flex-col bottom-0 left-0 right-0 h-full">
+    <div className="fixed flex flex-col bottom-0 left-0 right-0 h-dvh">
       <Header />
       <Chats />
       <InputChat />

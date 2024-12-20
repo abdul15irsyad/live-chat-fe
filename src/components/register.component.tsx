@@ -4,16 +4,22 @@ import { useChatStore } from '@/hooks/use-chat-store';
 import { axiosAPI } from '@/utils/axios-api.util';
 import { errorHandler } from '@/utils/error.util';
 import { useMutation } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 
 export const Register = () => {
   const { setName } = useChatStore();
+  const { enqueueSnackbar } = useSnackbar();
   const [form, setForm] = useState<Record<string, string>>({
     name: '',
   });
   const [error, setError] = useState<Record<string, string>>({});
 
-  const { mutateAsync, error: errorRegister } = useMutation({
+  const {
+    mutateAsync,
+    error: errorRegister,
+    isPending: loadingRegister,
+  } = useMutation({
     mutationKey: ['register'],
     mutationFn: async ({ name }: { name: string }) => {
       const response = await axiosAPI.post<{ message: string; data: string[] }>(
@@ -30,6 +36,12 @@ export const Register = () => {
     e.preventDefault();
     setError({});
     if (form.name !== '') {
+      if (form.name.length < 3) {
+        setError(() => ({
+          name: 'must be greater than or equal to 3 characters',
+        }));
+        return;
+      }
       await mutateAsync({ name: form.name });
       setName(form.name);
     }
@@ -42,8 +54,8 @@ export const Register = () => {
   useEffect(() => {
     const error = errorRegister;
     if (!error) return;
-    errorHandler({ error, setError });
-  }, [errorRegister]);
+    errorHandler({ error, setError, enqueueSnackbar });
+  }, [errorRegister, enqueueSnackbar]);
 
   return (
     <div
@@ -53,11 +65,11 @@ export const Register = () => {
       aria-modal="true"
     >
       <div
-        className="fixed inset-0 bg-gray-500/75 transition-opacity"
+        className="fixed inset-0 bg-gray-100 transition-opacity"
         aria-hidden="true"
       ></div>
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-        <div className="flex min-h-full items-center justify-center p-4 sm:items-center sm:p-0">
+        <div className="flex h-dvh items-center justify-center p-4 sm:items-center sm:p-0">
           <div className="relative w-full transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:w-full sm:max-w-lg p-5">
             <form onSubmit={handleSubmit}>
               <h3
@@ -68,6 +80,7 @@ export const Register = () => {
               </h3>
               <input
                 type="text"
+                disabled={loadingRegister}
                 className={`border border-gray-300 text-gray-900 ${error?.name ? 'border-red-500 outline-red-500' : ''} text-sm rounded-lg block w-full p-2.5`}
                 placeholder="your name, example: John Doe"
                 value={form.name}
@@ -83,10 +96,14 @@ export const Register = () => {
               <div className="flex justify-end mt-10">
                 <button
                   type="submit"
-                  disabled={form.name === ''}
-                  className="inline-flex rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 disabled:bg-gray-400"
+                  disabled={form.name === '' || loadingRegister}
+                  className="inline-flex rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
                 >
-                  Start Chatting
+                  {loadingRegister ? (
+                    <span>Loading...</span>
+                  ) : (
+                    <span>Start Chatting</span>
+                  )}
                 </button>
               </div>
             </form>

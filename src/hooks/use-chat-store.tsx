@@ -22,10 +22,12 @@ export type IChat = BaseChat &
   );
 
 interface IChatState {
+  isReady: boolean;
   name?: string;
   clientNames: string[];
   chats: IChat[];
   webSocket?: WebSocket;
+  setIsReady: (ready: boolean) => void;
   setName: (name: string) => void;
   setClientNames: (clientNames: string[]) => void;
   setChats: (chats: IChat[]) => void;
@@ -42,9 +44,11 @@ export const useChatStore = create<IChatState>(
   // )(
   (set) => {
     return {
+      isReady: false,
       name: undefined,
       chats: [],
       clientNames: [],
+      setIsReady: (isReady) => set({ isReady }),
       setName: (name) => set({ name }),
       setClientNames: (clientNames) => set({ clientNames }),
       setChats: (chats) => set({ chats }),

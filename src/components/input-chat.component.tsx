@@ -1,6 +1,7 @@
 'use client';
 
 import { useChatStore } from '@/hooks/use-chat-store';
+import { useIsMobile } from '@/hooks/use-is-mobile';
 import { SendHorizontal } from 'lucide-react';
 import React, {
   ChangeEventHandler,
@@ -12,9 +13,10 @@ import React, {
 export const InputChat = () => {
   const { name, addChat, webSocket } = useChatStore();
   const [text, setText] = useState('');
+  const isMobile = useIsMobile();
 
   const handleKeyDown: KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === 'Enter' && !e.shiftKey && !isMobile) {
       e.preventDefault(); // Prevent default Enter behavior
       submit();
     }
