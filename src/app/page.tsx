@@ -87,7 +87,7 @@ export default () => {
   if (!name) return <Register />;
 
   return (
-    <div className="fixed flex flex-col bottom-0 left-0 right-0 h-full">
+    <div className="fixed flex flex-col bottom-0 left-0 right-0 h-dvh">
       <Header />
       <Chats />
       <InputChat />
