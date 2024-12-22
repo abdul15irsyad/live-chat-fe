@@ -50,7 +50,8 @@ export const useChatStore = create<IChatState>(
       clientNames: [],
       setIsReady: (isReady) => set({ isReady }),
       setName: (name) => set({ name }),
-      setClientNames: (clientNames) => set({ clientNames }),
+      setClientNames: (clientNames) =>
+        set({ clientNames: clientNames.sort((a, b) => (a < b ? -1 : 1)) }),
       setChats: (chats) => set({ chats }),
       addChat: (chat) =>
         set((prev) => {
