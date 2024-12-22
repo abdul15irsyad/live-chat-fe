@@ -78,7 +78,7 @@ const AvatarWithName = ({
   className?: string;
 }) => (
   <div
-    className={`flex items-center gap-1.5 p-2 px-2.5 text-sm hover:bg-gray-100 rounded-md ${className}`}
+    className={`${className} flex items-center gap-1.5 p-2 px-2.5 text-sm hover:bg-gray-100 rounded-md`}
   >
     <Avatar name={name!} size="sm" />
     <div className="font-bold">{name}</div>
