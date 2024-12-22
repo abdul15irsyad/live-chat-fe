@@ -3,7 +3,8 @@
 import React, { ReactNode } from 'react';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { SnackbarProvider } from 'notistack';
+import { closeSnackbar, SnackbarProvider } from 'notistack';
+import { X } from 'lucide-react';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,6 +24,13 @@ export const AllProvider = ({ children }: { children: ReactNode }) => {
         vertical: 'top',
         horizontal: 'right',
       }}
+      action={(snackbarId) => (
+        <X
+          size={20}
+          onClick={() => closeSnackbar(snackbarId)}
+          cursor={'pointer'}
+        />
+      )}
     >
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </SnackbarProvider>

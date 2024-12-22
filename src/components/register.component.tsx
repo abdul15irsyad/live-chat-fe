@@ -4,6 +4,7 @@ import { useChatStore } from '@/hooks/use-chat-store';
 import { axiosAPI } from '@/utils/axios-api.util';
 import { errorHandler } from '@/utils/error.util';
 import { useMutation } from '@tanstack/react-query';
+import Image from 'next/image';
 import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 
@@ -97,13 +98,29 @@ export const Register = () => {
                 <button
                   type="submit"
                   disabled={form.name === '' || loadingRegister}
-                  className="inline-flex rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                  className="relative inline-flex rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
                 >
-                  {loadingRegister ? (
-                    <span>Loading...</span>
-                  ) : (
-                    <span>Start Chatting</span>
+                  {loadingRegister && (
+                    <Image
+                      src="/animations/loading-3.svg"
+                      alt="loading"
+                      width={20}
+                      height={20}
+                      style={{
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        margin: '0 auto',
+                      }}
+                    />
                   )}
+                  <span
+                    style={{
+                      visibility: loadingRegister ? 'hidden' : 'visible',
+                    }}
+                  >
+                    Start Chatting
+                  </span>
                 </button>
               </div>
             </form>

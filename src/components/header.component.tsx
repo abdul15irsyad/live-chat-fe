@@ -1,11 +1,13 @@
 import { useChatStore } from '@/hooks/use-chat-store';
 import Image from 'next/image';
 // import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import { Avatar } from './avatar.component';
+import { Modal } from './modal.component';
 
 export const Header = ({ typing }: { typing?: string }) => {
   const { name, clientNames } = useChatStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className="bg-white shadow-md z-10">
@@ -25,15 +27,34 @@ export const Header = ({ typing }: { typing?: string }) => {
             {typing ? (
               <span className="text-green-600">{`${typing} typing...`}</span>
             ) : (
-              <span className="text-gray-400">{clientNames?.join(', ')}</span>
+              <>
+                <span
+                  className="inline-block text-gray-400 overflow-hidden line-clamp-1 cursor-pointer"
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  {clientNames?.join(', ')}
+                </span>
+                <Modal
+                  isOpen={isModalOpen}
+                  onClose={() => setIsModalOpen(false)}
+                >
+                  <h2 className="text-lg font-bold">Room Member</h2>
+                  <div>
+                    {clientNames.map((name, index) => (
+                      <AvatarWithName
+                        key={index}
+                        name={name}
+                        className="px-0 hover:bg-transparent"
+                      />
+                    ))}
+                  </div>
+                </Modal>
+              </>
             )}
           </h6>
         </div>
         <div className="flex">
-          <div className="flex items-center gap-1.5 p-2 px-2.5 text-sm hover:bg-gray-100 rounded-md">
-            <Avatar name={name!} size="sm" />
-            <div className="font-bold">{name}</div>
-          </div>
+          <AvatarWithName name={name!} />
           {/* <Link href="https://github.com/abdul15irsyad" target="_blank">
             <Image
               src="/images/github.svg"
@@ -48,3 +69,18 @@ export const Header = ({ typing }: { typing?: string }) => {
     </div>
   );
 };
+
+const AvatarWithName = ({
+  name,
+  className,
+}: {
+  name: string;
+  className?: string;
+}) => (
+  <div
+    className={`flex items-center gap-1.5 p-2 px-2.5 text-sm hover:bg-gray-100 rounded-md ${className}`}
+  >
+    <Avatar name={name!} size="sm" />
+    <div className="font-bold">{name}</div>
+  </div>
+);

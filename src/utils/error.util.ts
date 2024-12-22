@@ -24,7 +24,8 @@ export const errorHandler = ({
       }
     }
     enqueueSnackbar({
-      message: `${error.message}`,
+      message: `${error.response?.data?.message ?? error.message}`,
+      variant: 'error',
     });
   }
 };

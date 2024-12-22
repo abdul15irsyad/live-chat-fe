@@ -1,9 +1,10 @@
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+// import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import Image from 'next/image';
 
 export const InitLoading = () => {
   return (
     <div className="w-screen h-dvh flex justify-center items-center gap-x-6 bg-gray-100">
-      <DotLottieReact
+      {/* <DotLottieReact
         src="/animations/loading-2.lottie"
         autoplay
         loop
@@ -11,6 +12,12 @@ export const InitLoading = () => {
           width: 64,
           height: 64,
         }}
+      /> */}
+      <Image
+        src="/animations/loading-3.svg"
+        alt="loading"
+        width={64}
+        height={64}
       />
       <div className="text max-w-60">
         <h2 className="text-xl mb-2">Loading</h2>
