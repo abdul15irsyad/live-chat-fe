@@ -12,7 +12,14 @@ import { useQuery } from '@tanstack/react-query';
 import { useCallback, useEffect } from 'react';
 
 export default () => {
-  const { name, addChat, setWebSocket, setClientNames } = useChatStore();
+  const {
+    name,
+    addChat,
+    setWebSocket,
+    setClientNames,
+    addTyping,
+    removeTyping,
+  } = useChatStore();
   // const isHydrated = useHydrationZustand(useChatStore);
 
   const getAllClient = useCallback(async () => {
@@ -51,6 +58,10 @@ export default () => {
           timestamp: new Date(),
           isSend: false,
         });
+      } else if (payload.type === 'typing') {
+        console.log(payload);
+        if (payload.data.status) addTyping(payload.client.name);
+        else removeTyping(payload.client.name);
       } else if (['joined', 'left'].includes(payload.type)) {
         addChat({
           type: 'badge',
@@ -64,7 +75,15 @@ export default () => {
     };
 
     return () => socket.close();
-  }, [name, getAllClient, setWebSocket, addChat, setClientNames]);
+  }, [
+    name,
+    getAllClient,
+    setWebSocket,
+    addChat,
+    setClientNames,
+    addTyping,
+    removeTyping,
+  ]);
 
   const { isLoading: isLoadingRoot } = useQuery({
     queryKey: ['root'],

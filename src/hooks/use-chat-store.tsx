@@ -26,12 +26,15 @@ interface IChatState {
   name?: string;
   clientNames: string[];
   chats: IChat[];
+  typings: string[];
   webSocket?: WebSocket;
   setIsReady: (ready: boolean) => void;
   setName: (name: string) => void;
   setClientNames: (clientNames: string[]) => void;
   setChats: (chats: IChat[]) => void;
   addChat: (chat: IChat) => void;
+  addTyping: (typing: string) => void;
+  removeTyping: (typing: string) => void;
   setWebSocket: (webSocket: WebSocket) => void;
 }
 
@@ -48,20 +51,33 @@ export const useChatStore = create<IChatState>(
       name: undefined,
       chats: [],
       clientNames: [],
+      typings: [],
       setIsReady: (isReady) => set({ isReady }),
       setName: (name) => set({ name }),
       setClientNames: (clientNames) =>
         set({ clientNames: clientNames.sort((a, b) => (a < b ? -1 : 1)) }),
       setChats: (chats) => set({ chats }),
       addChat: (chat) =>
-        set((prev) => {
+        set((state) => {
           if (chat.type === 'chat') {
             chat.message = chat.message?.replace(/\n/g, '<br>');
           }
           return {
-            chats: [...prev.chats, chat],
+            chats: [...state.chats, chat],
           };
         }),
+      addTyping: (typing) =>
+        set((state) => {
+          return !state.typings.includes(typing)
+            ? { typings: [...state.typings, typing] }
+            : { typings: state.typings };
+        }),
+      removeTyping: (typing) =>
+        set((state) => ({
+          typings: state.typings.filter(
+            (stateTyping) => stateTyping !== typing,
+          ),
+        })),
       setWebSocket: (webSocket) => set({ webSocket }),
     };
   },

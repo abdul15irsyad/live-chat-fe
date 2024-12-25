@@ -7,13 +7,33 @@ import React, {
   ChangeEventHandler,
   FormEventHandler,
   KeyboardEventHandler,
+  useEffect,
   useState,
 } from 'react';
 
 export const InputChat = () => {
   const { name, addChat, webSocket } = useChatStore();
   const [text, setText] = useState('');
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
   const isMobile = useIsMobile();
+
+  useEffect(() => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    const newTimeoutId = setTimeout(() => {
+      webSocket?.send(
+        JSON.stringify({
+          type: 'typing',
+          data: {
+            status: false,
+          },
+        }),
+      );
+    }, 1000);
+    setTimeoutId(newTimeoutId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [text]);
 
   const handleKeyDown: KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
     if (e.key === 'Enter' && !e.shiftKey && !isMobile) {
@@ -24,6 +44,14 @@ export const InputChat = () => {
 
   const handleChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     setText(e.target.value);
+    webSocket?.send(
+      JSON.stringify({
+        type: 'typing',
+        data: {
+          status: true,
+        },
+      }),
+    );
   };
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
