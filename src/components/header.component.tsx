@@ -25,7 +25,7 @@ export const Header = () => {
           </div>
           <h6 className="text-xxs md:text-xs">
             {typings?.length > 0 ? (
-              <span className="inline text-green-600">{`${typings?.[0]} typing...`}</span>
+              <span className="inline text-green-600">{`${typings?.[0]} is typing...`}</span>
             ) : (
               <>
                 <span
