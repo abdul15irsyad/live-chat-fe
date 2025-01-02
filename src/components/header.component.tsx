@@ -5,8 +5,8 @@ import React, { useState } from 'react';
 import { Avatar } from './avatar.component';
 import { Modal } from './modal.component';
 
-export const Header = ({ typing }: { typing?: string }) => {
-  const { name, clientNames } = useChatStore();
+export const Header = () => {
+  const { name, clientNames, typings } = useChatStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -24,12 +24,12 @@ export const Header = ({ typing }: { typing?: string }) => {
             <h1 className="md:text-xl text-lg font-bold">Room Chat</h1>
           </div>
           <h6 className="text-xxs md:text-xs">
-            {typing ? (
-              <span className="text-green-600">{`${typing} is typing...`}</span>
+            {typings?.length > 0 ? (
+              <span className="inline text-green-600">{`${typings?.[0]} is typing...`}</span>
             ) : (
               <>
                 <span
-                  className="inline-block text-gray-400 overflow-hidden line-clamp-1 cursor-pointer"
+                  className="inline text-gray-400 overflow-hidden line-clamp-1 cursor-pointer"
                   onClick={() => setIsModalOpen(true)}
                 >
                   {clientNames?.join(', ')}
